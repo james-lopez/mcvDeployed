@@ -1,0 +1,14 @@
+# Ghostty terminal config
+
+font-family = MesloLGS NF
+font-size = 14
+
+theme = dark:GruvboxDark,light:GruvboxLight
+
+window-padding-x = 8
+window-padding-y = 8
+
+cursor-style = block
+cursor-style-blink = false
+
+shell-integration = zsh

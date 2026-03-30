@@ -1,5 +1,5 @@
 # ============================================
-# James's aliases — synced across all machines
+# Shell aliases
 # ============================================
 
 # --- Navigation ---
@@ -46,8 +46,7 @@ alias myip="curl -s ifconfig.me"
 alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
 
 # --- Dotfiles ---
-alias dotfiles="cd ~/dotfiles"
-alias dotpull="cd ~/dotfiles && git pull && source ~/.zshrc && echo '✅ Dotfiles synced'"
+alias dotfiles="cd \$DOTFILES"
 alias reload="source ~/.zshrc && echo '✅ Shell reloaded'"
 
 # --- Claude Code ---

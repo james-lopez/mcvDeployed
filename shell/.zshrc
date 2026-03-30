@@ -1,15 +1,15 @@
 # ============================================
-# James's .zshrc — sourced from ~/dotfiles
+# .zshrc — sourced from ~/dotfiles
 # ============================================
 
-# --- Dotfiles location ---
-export DOTFILES="$HOME/dotfiles"
+# --- Dotfiles location (resolved from .zshrc symlink) ---
+export DOTFILES="$(dirname "$(readlink -f ~/.zshrc)")"
+export DOTFILES="${DOTFILES%/shell}"
 
-# --- Oh My Zsh ---
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git node npm docker zsh-autosuggestions zsh-syntax-highlighting)
-source "$ZSH/oh-my-zsh.sh"
+# --- Source Prezto ---
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
 
 # --- Path additions ---
 export PATH="$HOME/.npm-global/bin:$PATH"
@@ -36,6 +36,3 @@ setopt HIST_IGNORE_SPACE
 export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
-
-# --- Powerlevel10k config (generated per machine by p10k configure) ---
-[[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"

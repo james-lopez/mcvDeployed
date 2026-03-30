@@ -1,58 +1,6 @@
 # ============================================
-# James's shell functions — the good stuff
+# Shell functions
 # ============================================
-
-# --- Dotfiles push (function, not alias — needs args) ---
-function dotpush() {
-  cd ~/dotfiles && git add -A && git commit -m "${1:-update dotfiles}" && git push && echo '✅ Dotfiles pushed'
-}
-
-# --- Job Context Switcher ---
-# Usage: job crunchyroll | job mcd | job orka | job personal
-function job() {
-  local profile="$1"
-  local dotfiles_dir="$HOME/dotfiles"
-  local jobs_dir="$dotfiles_dir/jobs"
-
-  if [[ -z "$profile" ]]; then
-    echo "Current job: ${CURRENT_JOB:-not set}"
-    echo "Available: crunchyroll, mcd, orka, personal"
-    return 0
-  fi
-
-  if [[ ! -d "$jobs_dir/$profile" ]]; then
-    echo "❌ Unknown job profile: $profile"
-    echo "Available: crunchyroll, mcd, orka, personal"
-    return 1
-  fi
-
-  # Apply git config for this job
-  if [[ -f "$jobs_dir/$profile/.gitconfig" ]]; then
-    local name=$(git config --file "$jobs_dir/$profile/.gitconfig" user.name)
-    local email=$(git config --file "$jobs_dir/$profile/.gitconfig" user.email)
-    git config --global user.name "$name"
-    git config --global user.email "$email"
-    echo "🔧 Git identity: $name <$email>"
-  fi
-
-  # Apply Claude Code overrides for this job
-  if [[ -f "$jobs_dir/$profile/claude.json" ]]; then
-    local claude_settings="$HOME/.claude/settings.json"
-    local base_settings="$dotfiles_dir/claude-code/settings.json"
-
-    if command -v jq &> /dev/null; then
-      local merged=$(jq -s '.[0] * .[1]' "$base_settings" "$jobs_dir/$profile/claude.json")
-      echo "$merged" > "$claude_settings"
-    else
-      cp "$base_settings" "$claude_settings"
-      echo "⚠️  Install jq for per-job Claude overrides: brew install jq"
-    fi
-    echo "🤖 Claude Code settings updated for: $profile"
-  fi
-
-  export CURRENT_JOB="$profile"
-  echo "✅ Switched to: $profile"
-}
 
 # --- Quick project finder ---
 function proj() {
